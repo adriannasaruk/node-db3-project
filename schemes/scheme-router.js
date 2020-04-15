@@ -1,7 +1,6 @@
 const express = require('express');
 
 const Schemes = require('./scheme-model.js');
-
 const router = express.Router();
 
 router.get('/', (req, res) => {
@@ -22,7 +21,7 @@ router.get('/:id', (req, res) => {
     if (scheme) {
       res.json(scheme);
     } else {
-      res.status(404).json({ message: 'Could not find scheme with given id.' })
+    res.status(404).json({message: "Can not find the given"})
     }
   })
   .catch(err => {
@@ -81,14 +80,11 @@ router.post('/:id/steps', (req, res) => {
 router.put('/:id', (req, res) => {
   const { id } = req.params;
   const changes = req.body;
-
-  Schemes.findById(id)
-  .then(scheme => {
-    if (scheme) {
-      Schemes.update(changes, id)
-      .then(updatedScheme => {
-        res.json(updatedScheme);
-      });
+  
+  Schemes.update(id, changes)
+    .then(updated => {
+      if(updated) {
+      res.json(updated);
     } else {
       res.status(404).json({ message: 'Could not find scheme with given id' });
     }
